@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative pt-32 pb-20 md:pt-48 md:pb-40 overflow-hidden">
+    <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 lg:pt-48 lg:pb-40 overflow-x-hidden">
       {/* Background gradient */}
       <div
         className="absolute inset-0 z-0 opacity-10"
@@ -13,9 +13,9 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-8 relative z-10 grid md:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Text */}
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
           <span
             className="inline-block px-4 py-1.5 rounded-full text-sm font-bold tracking-wider uppercase"
             style={{
@@ -26,28 +26,28 @@ export default function Hero() {
             Pływanie dla każdego
           </span>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-[var(--color-on-surface)] leading-[1.1] -tracking-widest">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-[var(--color-on-surface)] leading-[1.1] -tracking-widest">
             Radość i{" "}
             <span className="text-[var(--color-primary)]">Bezpieczeństwo</span>{" "}
             w Wodzie
           </h1>
 
-          <p className="text-xl text-[var(--color-on-surface-variant)] font-medium leading-relaxed max-w-lg">
+          <p className="text-lg md:text-xl text-[var(--color-on-surface-variant)] font-medium leading-relaxed max-w-lg">
             Nauka pływania dla dzieci i dorosłych w Lubinie prowadzona przez
             pasjonatów, którzy dbają o każdy Twój ruch.
           </p>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3 md:gap-4">
             <a
               href="#kontakt"
-              className="bg-[var(--color-primary)] text-[var(--color-on-primary)] px-10 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-primary)]"
+              className="bg-[var(--color-primary)] text-[var(--color-on-primary)] px-8 md:px-10 py-3.5 md:py-4 rounded-full font-bold text-base md:text-lg hover:scale-105 active:scale-95 transition-all shadow-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-primary)]"
               style={{ boxShadow: "0 20px 40px -10px var(--color-primary)" }}
             >
               Zapisz się na pierwszą lekcję
             </a>
             <a
               href="#grafik"
-              className="bg-white text-[var(--color-primary)] border-2 px-10 py-4 rounded-full font-bold text-lg hover:bg-[var(--color-surface-container-low)] transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-primary)]"
+              className="bg-white text-[var(--color-primary)] border-2 px-8 md:px-10 py-3.5 md:py-4 rounded-full font-bold text-base md:text-lg hover:bg-[var(--color-surface-container-low)] transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-primary)]"
               style={{ borderColor: "color-mix(in srgb, var(--color-primary) 10%, transparent)" }}
             >
               Poznaj nasz grafik
@@ -56,9 +56,9 @@ export default function Hero() {
         </div>
 
         {/* Image */}
-        <div className="hero-img-group relative">
+        <div className="hero-img-group relative pb-6 pr-6 lg:pb-8 lg:pr-8">
           <div
-            className="absolute -top-12 -left-12 w-64 h-64 rounded-full blur-3xl opacity-30"
+            className="absolute -top-12 -left-12 w-48 h-48 lg:w-64 lg:h-64 rounded-full blur-3xl opacity-30"
             style={{ backgroundColor: "var(--color-secondary-container)" }}
             aria-hidden="true"
           />
@@ -79,13 +79,13 @@ export default function Hero() {
               alt="Osoba pływająca na basenie krytym"
               width={600}
               height={500}
-              className="w-full h-[500px] object-cover"
+              className="w-full h-[260px] md:h-[380px] lg:h-[500px] object-cover"
               priority
             />
           </div>
 
           {/* Badge */}
-          <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-lg shadow-xl flex items-center gap-4 max-w-xs">
+          <div className="absolute bottom-0 right-0 bg-white p-4 md:p-6 rounded-lg shadow-xl flex items-center gap-3 md:gap-4 max-w-xs">
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
               style={{

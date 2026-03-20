@@ -110,11 +110,19 @@ function SkeletonCell() {
   );
 }
 
+function getTodayDayIndex(): number {
+  const jsDay = new Date().getDay(); // 0=Sun … 6=Sat
+  // Map to DAYS index (0=Mon … 5=Sat); treat Sun/weekends as 0 (Mon)
+  if (jsDay === 0 || jsDay === 7) return 0;
+  return Math.min(jsDay - 1, 5);
+}
+
 export default function Schedule() {
   const [weekOffset, setWeekOffset] = useState(0);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [configured, setConfigured] = useState(true);
+  const [selectedDayIdx, setSelectedDayIdx] = useState(getTodayDayIndex);
 
   const fetchEvents = useCallback(async (offset: number) => {
     setLoading(true);
@@ -188,70 +196,163 @@ export default function Schedule() {
           <button
             onClick={() => setWeekOffset((o) => o - 1)}
             aria-label="Poprzedni tydzień"
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors font-medium text-slate-600 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="flex items-center gap-2 px-3 py-2 md:px-4 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors font-medium text-slate-600 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            Poprzedni
+            <span className="hidden md:inline">Poprzedni</span>
           </button>
 
           <div className="text-center">
-            <p className="font-bold text-[var(--color-on-surface)]">
+            <p className="font-bold text-sm md:text-base text-[var(--color-on-surface)]">
               {formatDate(weekStart)} – {formatDate(weekEnd)}
             </p>
-            {weekOffset === 0 && (
-              <span className="text-xs text-[var(--color-on-surface-variant)]">
-                Bieżący tydzień
-              </span>
+            {weekOffset === 0 ? (
+              <span className="text-xs text-[var(--color-on-surface-variant)]">Bieżący tydzień</span>
+            ) : (
+              <button
+                onClick={() => setWeekOffset(0)}
+                className="text-xs underline underline-offset-2 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                style={{ color: "var(--color-primary)" }}
+              >
+                Wróć do bieżącego
+              </button>
             )}
           </div>
 
           <button
             onClick={() => setWeekOffset((o) => o + 1)}
             aria-label="Następny tydzień"
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors font-medium text-slate-600 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="flex items-center gap-2 px-3 py-2 md:px-4 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors font-medium text-slate-600 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
           >
-            Następny
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
+            <span className="hidden md:inline">Następny</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
 
-        {/* Calendar grid */}
+        {!configured && (
+          <div className="flex items-center gap-2 mb-4 px-1">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-800">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1-4h-2V7h2v6z"/></svg>
+              Przykładowy grafik
+            </span>
+            <span className="text-xs text-[var(--color-on-surface-variant)]">
+              Prawdziwe zajęcia pojawią się po podłączeniu Google Calendar
+            </span>
+          </div>
+        )}
+
+        {/* ── MOBILE: dzień po dniu ── */}
+        <div className="md:hidden" aria-live="polite" aria-label="Grafik zajęć">
+          {/* Segmented day picker */}
+          <div
+            className="grid grid-cols-6 gap-1 p-1 rounded-2xl mb-5"
+            style={{ backgroundColor: "var(--color-surface-container)" }}
+            role="tablist"
+            aria-label="Wybierz dzień"
+          >
+            {DAYS.map((d, idx) => {
+              const dayDate = new Date(weekStart);
+              dayDate.setDate(weekStart.getDate() + idx);
+              const dateNum = dayDate.getDate();
+              const isActive = selectedDayIdx === idx;
+              return (
+                <button
+                  key={d.day}
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setSelectedDayIdx(idx)}
+                  className={`flex flex-col items-center py-2.5 rounded-xl text-xs font-bold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1 ${
+                    isActive
+                      ? "shadow-sm scale-[1.04]"
+                      : "hover:bg-[var(--color-surface-container-high)]"
+                  }`}
+                  style={
+                    isActive
+                      ? {
+                          backgroundColor: "var(--color-primary)",
+                          color: "var(--color-on-primary)",
+                        }
+                      : { color: "var(--color-on-surface-variant)" }
+                  }
+                >
+                  <span className="uppercase tracking-wide">{d.short}</span>
+                  <span
+                    className={`mt-0.5 text-[11px] font-extrabold tabular-nums ${isActive ? "opacity-80" : "opacity-60"}`}
+                  >
+                    {dateNum}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Selected day heading */}
+          <p className="font-extrabold text-lg text-[var(--color-on-surface)] mb-3">
+            {DAYS[selectedDayIdx].full},{" "}
+            <span style={{ color: "var(--color-primary)" }}>
+              {formatDate((() => { const d = new Date(weekStart); d.setDate(weekStart.getDate() + selectedDayIdx); return d; })())}
+            </span>
+          </p>
+
+          {/* Events for selected day */}
+          <div
+            className="rounded-xl p-5 shadow-sm space-y-3"
+            style={{ backgroundColor: "var(--color-surface-container-lowest)" }}
+          >
+            {loading ? (
+              <div className="space-y-3">
+                <SkeletonCell />
+                <SkeletonCell />
+                <SkeletonCell />
+              </div>
+            ) : (
+              (() => {
+                const dayEvents = eventsByDay[selectedDayIdx];
+                if (dayEvents.length === 0) {
+                  return (
+                    <p className="text-center py-8 font-medium" style={{ color: "var(--color-on-surface-variant)" }}>
+                      Brak zajęć w tym dniu.
+                    </p>
+                  );
+                }
+                return dayEvents
+                  .sort((a, b) => {
+                    const ta = a.start.dateTime ?? a.start.date ?? "";
+                    const tb = b.start.dateTime ?? b.start.date ?? "";
+                    return new Date(ta).getTime() - new Date(tb).getTime();
+                  })
+                  .map((evt, evtIdx) => {
+                    const dt = evt.start.dateTime ?? evt.start.date ?? "";
+                    const dtEnd = evt.end.dateTime ?? evt.end.date ?? "";
+                    const timeStr = new Date(dt).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+                    const timeEnd = new Date(dtEnd).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+                    return (
+                      <div
+                        key={evt.id}
+                        className={`flex items-center gap-4 p-4 rounded-lg ${getEventColor(evt, evtIdx)}`}
+                      >
+                        <div className="text-sm font-bold tabular-nums whitespace-nowrap opacity-80">
+                          {timeStr}–{timeEnd}
+                        </div>
+                        <div className="font-bold text-sm">{evt.summary}</div>
+                      </div>
+                    );
+                  });
+              })()
+            )}
+          </div>
+        </div>
+
+        {/* ── DESKTOP: siatka tygodniowa ── */}
         <div
-          className="overflow-x-auto"
+          className="hidden md:block overflow-x-auto"
           aria-live="polite"
           aria-label="Grafik zajęć"
         >
-          {!configured && (
-            <div className="flex items-center gap-2 mb-4 px-1">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-800">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1-4h-2V7h2v6z"/></svg>
-                Przykładowy grafik
-              </span>
-              <span className="text-xs text-[var(--color-on-surface-variant)]">
-                Prawdziwe zajęcia pojawią się po podłączeniu Google Calendar
-              </span>
-            </div>
-          )}
           <div
             className="min-w-[700px] rounded-xl p-8 shadow-sm"
             style={{ backgroundColor: "var(--color-surface-container-lowest)" }}
@@ -270,8 +371,7 @@ export default function Schedule() {
                     key={d.day}
                     className="font-bold text-sm text-[var(--color-primary)]"
                   >
-                    <span className="hidden md:block">{d.full}</span>
-                    <span className="md:hidden">{d.short}</span>
+                    {d.full}
                   </div>
                 ))}
               </div>
@@ -297,7 +397,6 @@ export default function Schedule() {
                 </p>
               ) : (
                 <div className="space-y-3">
-                  {/* Collect unique time slots */}
                   {Array.from(
                     new Set(
                       events.map((e) => {
