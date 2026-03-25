@@ -30,7 +30,12 @@ export async function GET(request: Request) {
     url.searchParams.set("orderBy", "startTime");
     url.searchParams.set("maxResults", "100");
 
-    const res = await fetch(url.toString(), { next: { revalidate: 300 } });
+    const res = await fetch(url.toString(), {
+      next: { revalidate: 300 },
+      headers: {
+        Referer: process.env.NEXT_PUBLIC_SITE_URL ?? "https://orki-lubin.vercel.app",
+      },
+    });
 
     if (!res.ok) {
       const err = await res.text();
