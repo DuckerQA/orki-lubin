@@ -82,18 +82,12 @@ export default function Contact() {
             <div>
               <h3 className="font-bold text-lg mb-2">Zadzwoń do nas</h3>
               <a
-                href="tel:+48123456789"
+                href="tel:+48882199213"
                 className="text-xl font-bold hover:text-[var(--color-primary)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded-sm outline-none"
                 style={{ color: "var(--color-on-surface-variant)" }}
               >
-                +48 123 456 789
+                882 199 213
               </a>
-              <p
-                className="text-sm mt-1"
-                style={{ color: "var(--color-on-surface-variant)" }}
-              >
-                Pon – Pt: 9:00 – 18:00
-              </p>
             </div>
           </article>
 
@@ -123,11 +117,11 @@ export default function Contact() {
             <div>
               <h3 className="font-bold text-lg mb-2">Wyślij wiadomość</h3>
               <a
-                href="mailto:biuro@orkilubin.pl"
+                href="mailto:orkilubin@gmail.com"
                 className="hover:text-[var(--color-primary)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded-sm outline-none"
                 style={{ color: "var(--color-on-surface-variant)" }}
               >
-                biuro@orkilubin.pl
+                orkilubin@gmail.com
               </a>
             </div>
           </article>

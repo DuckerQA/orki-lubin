@@ -33,8 +33,10 @@ export default function Hero() {
           </h1>
 
           <p className="text-lg md:text-xl text-[var(--color-on-surface-variant)] font-medium leading-relaxed max-w-lg">
-            Nauka pływania dla dzieci i dorosłych w Lubinie prowadzona przez
-            pasjonatów, którzy dbają o każdy Twój ruch.
+            Indywidualna szkoła pływania prowadzona z pasji i zaangażowania.
+            Oferuję zajęcia dla dzieci i dorosłych na każdym poziomie
+            zaawansowania - od pierwszego kontaktu z wodą po doskonalenie
+            techniki.
           </p>
 
           <div className="flex flex-wrap gap-3 md:gap-4">

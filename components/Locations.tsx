@@ -50,23 +50,47 @@ export default function Locations() {
               O mnie
             </span>
             <h2 className="text-3xl font-extrabold text-blue-900 leading-tight">
-              Pasja do wody<br />od ponad 10 lat
+              Paweł — instruktor pływania
             </h2>
             <p
               className="text-base leading-relaxed font-medium"
               style={{ color: "var(--color-on-surface-variant)" }}
             >
-              Jestem certyfikowanym instruktorem pływania i ratownikiem wodnym.
-              Pracuję z dziećmi i dorosłymi na wszystkich poziomach zaawansowania —
-              od pierwszego kontaktu z wodą po doskonalenie techniki.
-              Małe grupy to mój priorytet, bo wtedy każdy kursant dostaje
-              uwagę, której potrzebuje.
+              Nazywam się Paweł i jestem instruktorem pływania, ratownikiem WOPR oraz
+              wychowawcą kolonijnym. Prowadzę zajęcia dla dzieci, młodzieży i dorosłych
+              od podstaw nauki pływania po doskonalenie techniki i pracy nad efektywnością
+              w wodzie.
+            </p>
+            <p
+              className="text-base leading-relaxed font-medium"
+              style={{ color: "var(--color-on-surface-variant)" }}
+            >
+              Z wodą jestem związany od najmłodszych lat, swoje doświadczenie budowałem
+              w klubie MKS Piranie Lubin. Od lat aktywnie rozwijam się również sportowo,
+              co przekładam na jakość i świadomość prowadzonych treningów.
+            </p>
+            <p
+              className="text-base leading-relaxed font-medium"
+              style={{ color: "var(--color-on-surface-variant)" }}
+            >
+              Na zajęciach pracuję nad techniką, ekonomią ruchu i swobodą w wodzie.
+              Każdy trening jest dopasowany do poziomu i celu kursanta niezależnie od
+              wieku. Dzięki temu nauka jest uporządkowana, skuteczna i nastawiona na
+              realny progres.
+            </p>
+            <p
+              className="text-base leading-relaxed font-medium"
+              style={{ color: "var(--color-on-surface-variant)" }}
+            >
+              Stawiam na indywidualne podejście, poprawną technikę od podstaw oraz
+              budowanie pewności siebie w wodzie. Moim celem jest, aby każdy kursant
+              nie tylko umiał pływać, ale robił to świadomie i z kontrolą.
             </p>
             <ul className="space-y-2">
               {[
-                "Certyfikowany instruktor PZP",
+                "Instruktor pływania",
                 "Ratownik wodny WOPR",
-                "Ponad 500 przeszkolonych kursantów",
+                "Wychowawca kolonijny",
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2 text-sm font-medium" style={{ color: "var(--color-on-surface)" }}>
                   <span
@@ -98,17 +122,47 @@ export default function Locations() {
                 Szkoła pływania
               </span>
               <h2 className="text-3xl font-extrabold text-blue-900 leading-tight">
-                ORKI Lubin
+                Szkoła pływania ORKI Lubin
               </h2>
               <p
                 className="text-base leading-relaxed font-medium"
                 style={{ color: "var(--color-on-surface-variant)" }}
               >
-                Działamy w Lubinie od 2015 roku. Prowadzimy zajęcia na dwóch
-                basenach krytych — w dzielnicy Ustronie i w Centrum.
-                Uczymy techniki, pewności siebie i bezpieczeństwa w wodzie
-                dzieci od 4. roku życia oraz dorosłych bez ograniczeń wiekowych.
+                ORKI Lubin to nowoczesna szkoła pływania prowadzona indywidualnie
+                przez instruktora. To miejsce, w którym nauka pływania opiera się
+                na spokojnej atmosferze, bezpieczeństwie i realnych postępach
+                każdego kursanta.
               </p>
+              <p
+                className="text-base leading-relaxed font-medium"
+                style={{ color: "var(--color-on-surface-variant)" }}
+              >
+                Zajęcia odbywają się na dwóch basenach krytych w dzielnicy Ustronie
+                oraz w Centrum. Uczę dzieci od 4. roku życia, młodzież oraz dorosłych,
+                bez ograniczeń wiekowych i na każdym poziomie zaawansowania.
+              </p>
+              <p
+                className="text-base leading-relaxed font-medium"
+                style={{ color: "var(--color-on-surface-variant)" }}
+              >
+                Moim celem jest nie tylko nauka techniki pływania, ale przede wszystkim
+                budowanie pewności siebie w wodzie oraz swobody ruchu tak, aby każdy
+                czuł się komfortowo i bezpiecznie.
+              </p>
+              <div className="space-y-1 text-sm font-medium" style={{ color: "var(--color-on-surface-variant)" }}>
+                <p>
+                  <span className="font-bold" style={{ color: "var(--color-on-surface)" }}>Mail:</span>{" "}
+                  <a href="mailto:orkilubin@gmail.com" className="hover:underline" style={{ color: "var(--color-primary)" }}>
+                    orkilubin@gmail.com
+                  </a>
+                </p>
+                <p>
+                  <span className="font-bold" style={{ color: "var(--color-on-surface)" }}>Telefon:</span>{" "}
+                  <a href="tel:+48882199213" className="hover:underline" style={{ color: "var(--color-primary)" }}>
+                    882 199 213
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         </div>

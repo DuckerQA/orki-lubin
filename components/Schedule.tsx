@@ -278,12 +278,28 @@ export default function Schedule() {
 
   return (
     <section className="py-24" style={{ backgroundColor: "var(--color-surface)" }} id="grafik">
-      <div className="max-w-7xl mx-auto px-8 text-center mb-12">
-        <h2 className="text-4xl font-extrabold text-blue-900 mb-4">Aktualny Grafik Zajęć</h2>
-        <p className="max-w-2xl mx-auto font-medium" style={{ color: "var(--color-on-surface-variant)" }}>
-          Wybierz dogodny termin i dołącz do jednej z naszych grup. Zajęcia odbywają się na dwóch
-          basenach — Basen Ustronie (ul. Konopnickiej 5) oraz Basen Centrum (ul. Sybiraków 11).
-        </p>
+      <div className="max-w-7xl mx-auto px-8 mb-12">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl font-extrabold text-blue-900 mb-4">Aktualny Grafik Zajęć</h2>
+          <p className="text-xl font-bold text-blue-900 mb-2">Wybierz dogodny termin i zacznij naukę pływania</p>
+        </div>
+        <div className="max-w-3xl mx-auto space-y-4 font-medium" style={{ color: "var(--color-on-surface-variant)" }}>
+          <p>
+            Zajęcia prowadzę zarówno w małych grupach (max 3 osoby), jak i w formie
+            indywidualnej. Możesz wybrać opcję najlepiej dopasowaną do swoich potrzeb i celów.
+          </p>
+          <p>
+            Standardowe zajęcia grupowe odbywają się raz w tygodniu i realizowane są na dwóch basenach:
+          </p>
+          <ul className="space-y-1 pl-2">
+            <li>– Basen Ustronie (ul. Konopnickiej 5)</li>
+            <li>– Basen Centrum (ul. Sybiraków 11)</li>
+          </ul>
+          <p>
+            Jeśli zależy Ci na szybszych efektach, większym komforcie lub elastycznych terminach,
+            możesz zdecydować się na zajęcia indywidualne, w pełni dopasowane do Twojego poziomu i możliwości.
+          </p>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-8">

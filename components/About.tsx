@@ -3,13 +3,22 @@ import Image from "next/image";
 const features = [
   {
     icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true">
+        <path d="M480-120q-33 0-56.5-23.5T400-200q0-33 23.5-56.5T480-280q33 0 56.5 23.5T560-200q0 33-23.5 56.5T480-120Zm0-160q-33 0-56.5-23.5T400-360v-400q0-33 23.5-56.5T480-840q33 0 56.5 23.5T560-760v400q0 33-23.5 56.5T480-280Z"/>
+      </svg>
+    ),
+    title: "Wieloletnie doświadczenie w wodzie",
+    desc: "ORKI LUBIN to nie tylko nauka pływania — to miejsce, w którym pasja łączy się z profesjonalnym podejściem. Jako instruktor, ratownik i pasjonat pływania prowadzę zajęcia dla dzieci i dorosłych, dbając o komfort, bezpieczeństwo i realne postępy każdego kursanta.",
+  },
+  {
+    icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M2,12 C4,8 6,16 8,12 C10,8 12,16 14,12 C16,8 18,16 20,12 C21,10 22,11 22,12" />
         <path d="M2,17 C4,13 6,21 8,17 C10,13 12,21 14,17 C16,13 18,21 20,17" opacity="0.4" />
       </svg>
     ),
     title: "Nauka przez zabawę",
-    desc: "Uczymy przez zabawę, budując pewność siebie i miłość do wody od pierwszego zanurzenia.",
+    desc: "Zajęcia prowadzę w sposób angażujący i dostosowany do wieku oraz poziomu uczestnika. Szczególnie w pracy z dziećmi stawiam na naukę poprzez zabawę, budując pewność siebie i pozytywne skojarzenia z wodą.",
   },
   {
     icon: (
@@ -18,8 +27,8 @@ const features = [
         <path d="M12 15a2 2 0 0 0 2-2c0-1.5-2-4-2-4s-2 2.5-2 4a2 2 0 0 0 2 2z" fill="white" opacity="0.5"/>
       </svg>
     ),
-    title: "Indywidualny progres",
-    desc: "Małe grupy (max 6 osób) gwarantują że instruktor śledzi postęp każdego kursanta.",
+    title: "Indywidualne podejście",
+    desc: "Prowadzę zajęcia indywidualne lub w małych grupach (maksymalnie 6 osób), co pozwala mi na bieżąco obserwować postępy i dopasowywać ćwiczenia do potrzeb każdego uczestnika.",
   },
   {
     icon: (
@@ -28,7 +37,7 @@ const features = [
       </svg>
     ),
     title: "Bezpieczeństwo w wodzie",
-    desc: "Certyfikowani ratownicy WOPR czuwają na każdych zajęciach — Twoje dziecko jest bezpieczne.",
+    desc: "Jako certyfikowany ratownik WOPR dbam o najwyższy poziom bezpieczeństwa podczas każdych zajęć — zarówno dzieci, jak i dorośli mogą czuć się pewnie w wodzie.",
   },
 ];
 
@@ -64,7 +73,7 @@ export default function About() {
         {/* Heading */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-extrabold text-blue-900 inline-block">
-            Poznaj nasz zespół i misję
+            Poznaj naszą misję
           </h2>
           {/* Wave underline */}
           <div className="flex justify-center mt-3" aria-hidden="true">
@@ -90,7 +99,7 @@ export default function About() {
                 src="/images/adrit1-kid-1401158.jpg"
                 alt="Trener pływania pomagający dziecku utrzymać się na wodzie"
                 fill
-                className="object-cover"
+                className="object-cover object-right md:object-center"
                 loading="lazy"
               />
               {/* blue water tint overlay */}
@@ -107,7 +116,7 @@ export default function About() {
                 src="/images/serena-repice-lentini-LTLBUvs4UdQ-unsplash.jpg"
                 alt="Grupowe zajęcia pływania na basenie"
                 fill
-                className="object-cover"
+                className="object-cover object-[35%_40%] md:object-center"
                 loading="lazy"
               />
               <div
@@ -144,15 +153,6 @@ export default function About() {
 
           {/* Content */}
           <div className="w-full md:w-1/2 space-y-8">
-            <p
-              className="text-lg leading-relaxed font-medium"
-              style={{ color: "var(--color-on-surface-variant)" }}
-            >
-              ORKI LUBIN to nie tylko szkoła pływania — to miejsce, gdzie pasja
-              spotyka się z profesjonalizmem. Nasi instruktorzy to doświadczeni
-              ratownicy i byli zawodnicy, którzy kochają pracę z dziećmi i dorosłymi.
-            </p>
-
             <div className="space-y-5">
               {features.map((f) => (
                 <article
