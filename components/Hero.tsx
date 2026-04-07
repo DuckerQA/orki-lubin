@@ -109,9 +109,6 @@ export default function Hero() {
             </div>
             <div>
               <p className="font-bold text-sm">Certyfikowana kadra</p>
-              <p className="text-xs text-[var(--color-on-surface-variant)]">
-                Ponad 10 lat doświadczenia
-              </p>
             </div>
           </div>
         </div>
