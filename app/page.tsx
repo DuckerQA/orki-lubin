@@ -1,11 +1,13 @@
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Schedule from "@/components/Schedule";
 import Pricing from "@/components/Pricing";
 import Locations from "@/components/Locations";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+
+const Schedule = dynamic(() => import("@/components/Schedule"));
 
 export default function Home() {
   return (

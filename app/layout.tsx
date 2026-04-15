@@ -4,16 +4,16 @@ import "./globals.css";
 
 const lexend = Lexend({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
   variable: "--font-lexend",
   display: "swap",
+  preload: true,
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
   variable: "--font-plus-jakarta-sans",
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {

@@ -26,10 +26,10 @@ export default function Footer() {
         {/* Links */}
         <nav aria-label="Stopka">
           <div className="flex flex-wrap gap-8 justify-center">
-            <span className="text-slate-400 text-sm">
+            <span className="text-slate-600 text-sm">
               Polityka prywatności
             </span>
-            <span className="text-slate-400 text-sm">
+            <span className="text-slate-600 text-sm">
               Regulamin
             </span>
             <a

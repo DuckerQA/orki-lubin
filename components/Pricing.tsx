@@ -74,7 +74,7 @@ export default function Pricing() {
             </h3>
             <p
               className="text-sm mb-6"
-              style={{ color: "color-mix(in srgb, var(--color-on-primary) 70%, transparent)" }}
+              style={{ color: "color-mix(in srgb, var(--color-on-primary) 90%, transparent)" }}
             >
               Pełne skupienie na Tobie, szybkie efekty i trening w 100%
               dopasowany do Twojego poziomu oraz celów.
@@ -87,7 +87,7 @@ export default function Pricing() {
             </div>
             <p
               className="text-sm mb-8"
-              style={{ color: "color-mix(in srgb, var(--color-on-primary) 70%, transparent)" }}
+              style={{ color: "color-mix(in srgb, var(--color-on-primary) 90%, transparent)" }}
             >
               1 osoba
             </p>

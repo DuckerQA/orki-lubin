@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, startTransition } from "react";
 
 interface CalendarEvent {
   id: string;
@@ -179,7 +179,7 @@ function DayColumn({ events, grid, eventColors }: { events: CalendarEvent[]; gri
           >
             <p className="text-xs font-bold leading-snug line-clamp-2">{getEventSummary(evt)}</p>
             {height >= 44 && (
-              <p className="text-[10px] font-medium opacity-60 mt-1 leading-none">
+              <p className="text-[10px] font-medium opacity-90 mt-1 leading-none">
                 {fmt(startDt)}–{fmt(endDt)}
               </p>
             )}
@@ -226,10 +226,12 @@ export default function Schedule() {
       });
       const res  = await fetch(`/api/calendar?${params}`);
       const data: CalendarResponse = await res.json();
-      setEvents(data.items ?? []);
-      if (data.eventColors) setEventColors(data.eventColors);
+      startTransition(() => {
+        setEvents(data.items ?? []);
+        if (data.eventColors) setEventColors(data.eventColors);
+      });
     } catch {
-      setEvents([]);
+      startTransition(() => setEvents([]));
     } finally {
       setLoading(false);
     }
@@ -349,7 +351,7 @@ export default function Schedule() {
                   }
                 >
                   <span className="uppercase tracking-wide">{d.short}</span>
-                  <span className={`mt-0.5 text-[11px] font-extrabold tabular-nums ${isActive ? "opacity-80" : "opacity-60"}`}>
+                  <span className="mt-0.5 text-[11px] font-extrabold tabular-nums">
                     {dayDate.getDate()}
                   </span>
                 </button>
@@ -392,7 +394,7 @@ export default function Schedule() {
                       className="flex items-center gap-4 p-4 rounded-lg"
                       style={getEventStyle(evt, eventColors)}
                     >
-                      <div className="text-sm font-bold tabular-nums whitespace-nowrap opacity-80">
+                      <div className="text-sm font-bold tabular-nums whitespace-nowrap opacity-90">
                         {fmt(startDt)}–{fmt(endDt)}
                       </div>
                       <div className="font-bold text-sm">{getEventSummary(evt)}</div>

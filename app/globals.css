@@ -100,7 +100,10 @@ h1, h2, h3, h4 {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.map-wave-anim { animation: wave-flow 11s linear infinite; }
+.map-wave-anim {
+  animation: wave-flow 11s linear infinite;
+  will-change: transform;
+}
 
 @keyframes ripple-pulse {
   0%   { transform: scale(0.6); opacity: 0.7; }
@@ -109,6 +112,7 @@ h1, h2, h3, h4 {
 .ripple-ring {
   animation: ripple-pulse var(--rp-dur, 2.2s) ease-out var(--rp-delay, 0s) infinite;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 /* Hero image bubbles */
@@ -130,6 +134,7 @@ h1, h2, h3, h4 {
   );
   border: 1px solid rgba(94, 177, 252, 0.4);
   animation: bubble-rise var(--dur, 1.8s) ease-in var(--delay, 0s) infinite;
+  will-change: transform, opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {
