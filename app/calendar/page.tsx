@@ -222,7 +222,7 @@ export default function CalendarDebugPage() {
                         const hasTime = !!evt.start.dateTime;
                         // wszystkie pola eventu oprócz id (pokazane osobno)
                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        const { id, start, end, ...rest } = evt as Record<string, unknown>;
+                        const { id, start, end, ...rest } = evt as unknown as Record<string, unknown>;
                         const extraFields = Object.entries(rest as Record<string, unknown>);
                         return (
                           <div
