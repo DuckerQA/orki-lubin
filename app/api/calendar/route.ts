@@ -48,7 +48,20 @@ export async function GET(request: Request) {
 
     const data = await res.json();
 
-    return NextResponse.json(data, {
+    // Fetch exact event colors from Google Calendar
+    let eventColors: Record<string, { background: string; foreground: string }> = {};
+    try {
+      const colorsUrl = `https://www.googleapis.com/calendar/v3/colors?key=${apiKey}`;
+      const colorsRes = await fetch(colorsUrl, { next: { revalidate: 86400 } });
+      if (colorsRes.ok) {
+        const colorsData = await colorsRes.json();
+        eventColors = colorsData.event ?? {};
+      }
+    } catch {
+      // ignore, fallback to hardcoded colors in frontend
+    }
+
+    return NextResponse.json({ ...data, eventColors }, {
       headers: {
         "Cache-Control": "s-maxage=300, stale-while-revalidate=60",
       },

@@ -10,47 +10,9 @@ interface CalendarEvent {
   colorId?: string;
 }
 
-const DUMMY_SCHEDULE = [
-  { day: 1, time: "16:00", duration: 45, summary: "Żółwiki — dzieci 4–6 lat",  colorId: "7" },
-  { day: 1, time: "17:00", duration: 45, summary: "Delfiny — dzieci 7–10 lat", colorId: "1" },
-  { day: 1, time: "18:00", duration: 45, summary: "Kurs dorosłych",             colorId: "2" },
-  { day: 2, time: "16:00", duration: 45, summary: "Żółwiki — dzieci 4–6 lat",  colorId: "7" },
-  { day: 2, time: "17:30", duration: 45, summary: "Rekiny — zaawansowani",      colorId: "4" },
-  { day: 3, time: "10:00", duration: 45, summary: "Kurs dorosłych (poranny)",   colorId: "2" },
-  { day: 3, time: "16:00", duration: 45, summary: "Żółwiki — dzieci 4–6 lat",  colorId: "7" },
-  { day: 3, time: "17:00", duration: 45, summary: "Delfiny — dzieci 7–10 lat", colorId: "1" },
-  { day: 3, time: "18:00", duration: 45, summary: "Kurs dorosłych",             colorId: "2" },
-  { day: 4, time: "16:00", duration: 45, summary: "Żółwiki — dzieci 4–6 lat",  colorId: "7" },
-  { day: 4, time: "17:30", duration: 45, summary: "Rekiny — zaawansowani",      colorId: "4" },
-  { day: 5, time: "16:00", duration: 45, summary: "Żółwiki — dzieci 4–6 lat",  colorId: "7" },
-  { day: 5, time: "17:00", duration: 45, summary: "Delfiny — dzieci 7–10 lat", colorId: "1" },
-  { day: 5, time: "18:00", duration: 45, summary: "Kurs dorosłych",             colorId: "2" },
-  { day: 6, time: "09:00", duration: 45, summary: "Żółwiki — dzieci 4–6 lat",  colorId: "7" },
-  { day: 6, time: "10:00", duration: 45, summary: "Delfiny — dzieci 7–10 lat", colorId: "1" },
-  { day: 6, time: "11:00", duration: 45, summary: "Rekiny — zaawansowani",      colorId: "4" },
-];
-
-function generateDummyEvents(weekOffset: number): CalendarEvent[] {
-  const monday = getWeekStart(weekOffset);
-  return DUMMY_SCHEDULE.map((slot, i) => {
-    const date = new Date(monday);
-    date.setDate(monday.getDate() + (slot.day - 1));
-    const [h, m] = slot.time.split(":").map(Number);
-    date.setHours(h, m, 0, 0);
-    const end = new Date(date);
-    end.setMinutes(end.getMinutes() + slot.duration);
-    return {
-      id: `dummy-${i}`,
-      summary: slot.summary,
-      colorId: slot.colorId,
-      start: { dateTime: date.toISOString() },
-      end:   { dateTime: end.toISOString() },
-    };
-  });
-}
-
 interface CalendarResponse {
   items?: CalendarEvent[];
+  eventColors?: Record<string, { background: string; foreground: string }>;
   error?: string;
 }
 
@@ -61,6 +23,7 @@ const DAYS = [
   { short: "Czw", full: "Czwartek",     day: 4 },
   { short: "Pt",  full: "Piątek",       day: 5 },
   { short: "Sob", full: "Sobota",       day: 6 },
+  { short: "Nd",  full: "Niedziela",    day: 0 },
 ];
 
 // ── Time grid ─────────────────────────────────────────────────────────────────
@@ -97,28 +60,45 @@ function fmt(dt: string): string {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getEventColor(event: CalendarEvent, index: number): string {
-  const map: Record<string, string> = {
-    "1":  "bg-blue-100 text-blue-800",
-    "2":  "bg-emerald-100 text-emerald-800",
-    "3":  "bg-violet-100 text-violet-800",
-    "4":  "bg-rose-100 text-rose-800",
-    "5":  "bg-amber-100 text-amber-800",
-    "6":  "bg-orange-100 text-orange-800",
-    "7":  "bg-cyan-100 text-cyan-800",
-    "8":  "bg-slate-100 text-slate-800",
-    "9":  "bg-indigo-100 text-indigo-800",
-    "10": "bg-emerald-100 text-emerald-800",
-    "11": "bg-red-100 text-red-800",
-  };
-  if (event.colorId && map[event.colorId]) return map[event.colorId];
-  const fallback = [
-    "bg-blue-100 text-blue-800",
-    "bg-cyan-100 text-cyan-800",
-    "bg-emerald-100 text-emerald-800",
-    "bg-indigo-100 text-indigo-800",
-  ];
-  return fallback[index % fallback.length];
+function hexLuminance(hex: string): number {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const toLinear = (c: number) => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
+const EVENT_COLOR_MAP: Array<{ keywords: string[]; bg: string }> = [
+  { keywords: ["piranie", "mks", "sp10"],                                bg: "#DC2626" }, // czerwony
+  { keywords: ["kolonia", "półkolonia", "polkolonia"],                   bg: "#DC2626" }, // czerwony
+  { keywords: ["delfinek"],                                              bg: "#00BFFF" }, // jasny niebieski
+  { keywords: ["wolny termin"],                                          bg: "#4ADE80" }, // jasny zielony
+  { keywords: ["senioralny", "senior", "uniwersytet"],                   bg: "#92400E" }, // brąz
+  { keywords: ["niedostępny", "niedostepny", "basen niedostępny"],       bg: "#94A3B8" }, // szary
+  { keywords: ["zajęcia"],                                               bg: "#15803D" }, // ciemny zielony (catch-all)
+];
+
+const FALLBACK_BG = "#64748B";
+
+function getEventBg(summary: string): string {
+  const lower = summary.toLowerCase();
+  for (const { keywords, bg } of EVENT_COLOR_MAP) {
+    if (keywords.some((kw) => lower.includes(kw))) return bg;
+  }
+  return FALLBACK_BG;
+}
+
+function getEventStyle(
+  event: CalendarEvent,
+  eventColors: Record<string, { background: string; foreground: string }>
+): { backgroundColor: string; color: string } {
+  if (event.colorId && eventColors[event.colorId]) {
+    const { background, foreground } = eventColors[event.colorId];
+    return { backgroundColor: background, color: foreground };
+  }
+  const bg = getEventBg(event.summary ?? "");
+  const textColor = hexLuminance(bg) > 0.35 ? "#1a1a1a" : "#ffffff";
+  return { backgroundColor: bg, color: textColor };
 }
 
 function getEventSummary(e: CalendarEvent): string {
@@ -141,8 +121,8 @@ function formatDate(d: Date): string {
 
 function getTodayDayIndex(): number {
   const d = new Date().getDay();
-  if (d === 0) return 0;
-  return Math.min(d - 1, 5);
+  if (d === 0) return 6; // Niedziela → ostatni indeks
+  return d - 1; // Pon=0 … Sob=5
 }
 
 type GridUtils = ReturnType<typeof makeGridUtils>;
@@ -180,7 +160,7 @@ function TimeAxis({ hourStart, hourLabels, gridH }: { hourStart: number; hourLab
 }
 
 // ── Single day column ─────────────────────────────────────────────────────────
-function DayColumn({ events, grid }: { events: CalendarEvent[]; grid: GridUtils }) {
+function DayColumn({ events, grid, eventColors }: { events: CalendarEvent[]; grid: GridUtils; eventColors: Record<string, { background: string; foreground: string }> }) {
   const { gridH, hourLabels, toY, toH } = grid;
   return (
     <div className="relative flex-1 min-w-0 border-l border-slate-100" style={{ height: gridH }}>
@@ -194,8 +174,8 @@ function DayColumn({ events, grid }: { events: CalendarEvent[]; grid: GridUtils 
         return (
           <div
             key={evt.id}
-            className={`absolute inset-x-1.5 rounded-lg overflow-hidden px-3 py-2 ${getEventColor(evt, idx)}`}
-            style={{ top, height }}
+            className="absolute inset-x-1.5 rounded-lg overflow-hidden px-3 py-2"
+            style={{ top, height, ...getEventStyle(evt, eventColors) }}
           >
             <p className="text-xs font-bold leading-snug line-clamp-2">{getEventSummary(evt)}</p>
             {height >= 44 && (
@@ -230,8 +210,8 @@ function SkeletonColumn({ grid }: { grid: GridUtils }) {
 export default function Schedule() {
   const [weekOffset, setWeekOffset] = useState(0);
   const [events, setEvents]         = useState<CalendarEvent[]>([]);
+  const [eventColors, setEventColors] = useState<Record<string, { background: string; foreground: string }>>({});
   const [loading, setLoading]       = useState(true);
-  const [configured, setConfigured] = useState(true);
   const [selectedDayIdx, setSelectedDayIdx] = useState(getTodayDayIndex);
 
   const fetchEvents = useCallback(async (offset: number) => {
@@ -246,13 +226,8 @@ export default function Schedule() {
       });
       const res  = await fetch(`/api/calendar?${params}`);
       const data: CalendarResponse = await res.json();
-      if (data.error === "Calendar not configured") {
-        setConfigured(false);
-        setEvents(generateDummyEvents(offset));
-      } else {
-        setConfigured(true);
-        setEvents(data.items ?? []);
-      }
+      setEvents(data.items ?? []);
+      if (data.eventColors) setEventColors(data.eventColors);
     } catch {
       setEvents([]);
     } finally {
@@ -264,8 +239,9 @@ export default function Schedule() {
 
   const weekStart = getWeekStart(weekOffset);
   const weekEnd   = new Date(weekStart);
-  weekEnd.setDate(weekStart.getDate() + 6);
+  weekEnd.setDate(weekStart.getDate() + 6); // Pon–Nd
 
+  // eventsByDay: index matches DAYS order (0=Pon…5=Sob, 6=Nd)
   const eventsByDay = DAYS.map(({ day }) =>
     events.filter((e) => {
       const dt = e.start.dateTime ?? e.start.date;
@@ -345,24 +321,10 @@ export default function Schedule() {
           </button>
         </div>
 
-        {!configured && (
-          <div className="flex items-center gap-2 mb-4 px-1">
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-800">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1-4h-2V7h2v6z"/>
-              </svg>
-              Przykładowy grafik
-            </span>
-            <span className="text-xs text-[var(--color-on-surface-variant)]">
-              Prawdziwe zajęcia pojawią się po podłączeniu Google Calendar
-            </span>
-          </div>
-        )}
-
         {/* ── MOBILE: card list ── */}
         <div className="md:hidden" aria-live="polite">
           <div
-            className="grid grid-cols-6 gap-1 p-1 rounded-2xl mb-5"
+            className="grid grid-cols-7 gap-1 p-1 rounded-2xl mb-5"
             style={{ backgroundColor: "var(--color-surface-container)" }}
             role="tablist"
             aria-label="Wybierz dzień"
@@ -427,7 +389,8 @@ export default function Schedule() {
                   return (
                     <div
                       key={evt.id}
-                      className={`flex items-center gap-4 p-4 rounded-lg ${getEventColor(evt, idx)}`}
+                      className="flex items-center gap-4 p-4 rounded-lg"
+                      style={getEventStyle(evt, eventColors)}
                     >
                       <div className="text-sm font-bold tabular-nums whitespace-nowrap opacity-80">
                         {fmt(startDt)}–{fmt(endDt)}
@@ -448,7 +411,7 @@ export default function Schedule() {
           >
             {/* Day headers */}
             <div
-              className="flex border-b sticky top-0 z-10"
+              className="flex border-b sticky top-0 z-10 px-4"
               style={{
                 borderColor: "var(--color-surface-container-high)",
                 backgroundColor: "var(--color-surface-container-lowest)",
@@ -478,7 +441,7 @@ export default function Schedule() {
                 <TimeAxis hourStart={hourStart} hourLabels={grid.hourLabels} gridH={grid.gridH} />
                 {loading
                   ? DAYS.map((d) => <SkeletonColumn key={d.day} grid={grid} />)
-                  : DAYS.map((_, idx) => <DayColumn key={idx} events={eventsByDay[idx]} grid={grid} />)
+                  : DAYS.map((_, idx) => <DayColumn key={idx} events={eventsByDay[idx]} grid={grid} eventColors={eventColors} />)
                 }
               </div>
             </div>

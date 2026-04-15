@@ -40,12 +40,21 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "ORKI LUBIN",
     url: "https://orkilubin.pl",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "ORKI LUBIN | Szkoła Pływania",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ORKI LUBIN | Szkoła Pływania",
     description:
       "Nauka pływania dla dzieci i dorosłych w Lubinie. Certyfikowani instruktorzy, małe grupy, Basen Miejski.",
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -55,10 +64,12 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": ["SportsActivityLocation", "LocalBusiness"],
   name: "ORKI LUBIN Szkoła Pływania",
   description:
     "Nauka pływania dla dzieci i dorosłych w Lubinie. Certyfikowani instruktorzy, małe grupy.",
+  url: "https://orkilubin.pl",
+  image: "https://orkilubin.pl/opengraph-image",
   address: {
     "@type": "PostalAddress",
     streetAddress: "ul. Sybiraków 11",
