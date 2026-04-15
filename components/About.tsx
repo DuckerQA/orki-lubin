@@ -101,6 +101,7 @@ export default function About() {
                 fill
                 className="object-cover object-right md:object-center"
                 loading="lazy"
+                quality={60}
                 sizes="(max-width: 768px) 68vw, 34vw"
               />
               {/* blue water tint overlay */}
@@ -119,6 +120,7 @@ export default function About() {
                 fill
                 className="object-cover object-[35%_40%] md:object-center"
                 loading="lazy"
+                quality={60}
                 sizes="(max-width: 768px) 54vw, 27vw"
               />
               <div

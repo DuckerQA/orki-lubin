@@ -83,6 +83,8 @@ export default function Hero() {
               height={500}
               className="w-full h-[260px] md:h-[380px] lg:h-[500px] object-cover"
               priority
+              fetchPriority="high"
+              quality={65}
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
