@@ -179,7 +179,7 @@ function DayColumn({ events, grid, eventColors }: { events: CalendarEvent[]; gri
           >
             <p className="text-xs font-bold leading-snug line-clamp-2">{getEventSummary(evt)}</p>
             {height >= 44 && (
-              <p className="text-[10px] font-medium opacity-90 mt-1 leading-none">
+              <p className="text-[10px] font-medium mt-1 leading-none">
                 {fmt(startDt)}–{fmt(endDt)}
               </p>
             )}
@@ -394,7 +394,7 @@ export default function Schedule() {
                       className="flex items-center gap-4 p-4 rounded-lg"
                       style={getEventStyle(evt, eventColors)}
                     >
-                      <div className="text-sm font-bold tabular-nums whitespace-nowrap opacity-90">
+                      <div className="text-sm font-bold tabular-nums whitespace-nowrap">
                         {fmt(startDt)}–{fmt(endDt)}
                       </div>
                       <div className="font-bold text-sm">{getEventSummary(evt)}</div>
